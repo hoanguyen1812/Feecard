@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-16"?>
+<FeeCard Id="autobc-2025-04-08-090854" Name="Auto Classic Standard 2025-04-08 - v090854">
+  <SettingGroup Handler="SumOfValuesBySettingTypeGroupHandler" Name="TargetAnnualRate">
+    <Reference Name="AutoClassicTARUpdatePricingForStandard2025-04-08v090854"/>
+  </SettingGroup>
+  <SettingGroup Handler="SumOfValuesBySettingTypeGroupHandler" Name="PlatformServicingRate">
+    <Setting Type="PercentageOfOutstanding" Value="0">
+      <Predicate On="LoanRequest.PlatformType" Name="EqualTo" Value="Retail"/>
+    </Setting>
+    <Reference Name="AutoClassicPSRUpdatePricingForStandard2025-04-08v090854"/>
+  </SettingGroup>
+  <SettingGroup Name="CustomFee" Handler="SumSettingGroupHandler" AdditionalParameters="{'CustomFeeTypeName':'LenderMarginRate'}">
+    <Setting Value="0.00"/>
+  </SettingGroup>
+  <SettingGroup Handler="FirstMatchSettingGroupHandler" Name="CreditRateMultiple">
+    <Setting Value="0"/>
+  </SettingGroup>
+  <SettingGroup Name="RiskAssuranceRate" Handler="SumOfValuesBySettingTypeGroupHandler">
+    <Setting Type="PercentageOfOutstanding" Value="2.00">
+      <Predicate Name="And">
+        <Predicate On="LoanRequest.PlatformType" Name="EqualTo" Value="Retail"/>
+        <Predicate On="Wholesale.AssetAgeEndOfTerm" Name="GreaterThan" Value="15"/>
+      </Predicate>
+    </Setting>
+    <Setting Type="PercentageOfOutstanding" Value="1.00">
+      <Predicate Name="And">
+        <Predicate On="LoanRequest.PlatformType" Name="EqualTo" Value="Retail"/>
+        <Predicate Name="Or">
+          <Predicate Name="And">
+            <Predicate On="Wholesale.LVR" Name="GreaterThan" Value="140"/>
+            <Predicate On="Wholesale.SaleType" Name="EqualTo" Value="Dealer"/>
+            <Predicate Name="Or">
+              <Predicate On="Wholesale.RiskTier" Name="EqualTo" Value="Tier1"/>
+              <Predicate On="Wholesale.RiskTier" Name="EqualTo" Value="Tier2"/>
+            </Predicate>
+          </Predicate>
+          <Predicate Name="And">
+            <Predicate On="Wholesale.LVR" Name="GreaterThan" Value="130"/>
+            <Predicate On="Wholesale.SaleType" Name="EqualTo" Value="Private"/>
+            <Predicate Name="Or">
+              <Predicate On="Wholesale.RiskTier" Name="EqualTo" Value="Tier1"/>
+              <Predicate On="Wholesale.RiskTier" Name="EqualTo" Value="Tier2"/>
+            </Predicate>
+          </Predicate>
+        </Predicate>
+      </Predicate>
+    </Setting>
+    <Setting Type="PercentageOfOutstanding" Value="2.00">
+      <Predicate Name="And">
+        <Predicate On="LoanRequest.PlatformType" Name="EqualTo" Value="Retail"/>
+        <Predicate On="Wholesale.LVR" Name="GreaterThan" Value="115"/>
+        <Predicate On="Wholesale.RiskTier" Name="EqualTo" Value="Tier3"/>
+      </Predicate>
+    </Setting>
+  </SettingGroup>
+  <SettingGroup Name="RSFee" Handler="SumSettingGroupHandler">
+    <Setting Value="299">
+      <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+    </Setting>
+    <Setting Value="200">
+      <Predicate Name="And">
+        <Predicate Name="Not">
+          <Predicate On="Wholesale.VehicleCategory" Name="EqualTo" Value="Motorbike"/>
+        </Predicate>
+        <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+      </Predicate>
+    </Setting>
+    <Setting Value="100">
+      <Predicate Name="Or">
+        <Predicate On="Wholesale.SaleType" Name="EqualTo" Value="Private"/>
+        <Predicate On="Wholesale.FinanceType" Name="EqualTo" Value="Refinance"/>
+      </Predicate>
+    </Setting>
+    <!--inflight-->
+    <Setting Value="325">
+      <Predicate Name="And">
+        <Predicate Name="Not">
+          <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+        </Predicate>
+        <Predicate On="DrawdownAmount" Name="LessThan" Value="25000"/>
+      </Predicate>
+    </Setting>
+    <Setting Value="400">
+      <Predicate Name="And">
+        <Predicate Name="Not">
+          <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+        </Predicate>
+        <Predicate On="DrawdownAmount" Name="GreaterThanOrEqualTo" Value="25000"/>
+      </Predicate>
+    </Setting>
+    <Setting Value="225">
+      <Predicate Name="And">
+        <Predicate Name="Not">
+          <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+        </Predicate>
+        <Predicate On="DrawdownAmount" Name="GreaterThanOrEqualTo" Value="10000"/>
+        <Predicate On="DrawdownAmount" Name="LessThanOrEqualTo" Value="25000"/>
+      </Predicate>
+    </Setting>
+    <Setting Value="300">
+      <Predicate Name="And">
+        <Predicate Name="Not">
+          <Predicate On="Wholesale.AppRequiresFSRConsideration" Name="EqualTo" Value="True"/>
+        </Predicate>
+        <Predicate On="DrawdownAmount" Name="GreaterThan" Value="25000"/>
+      </Predicate>
+    </Setting>
+  </SettingGroup>
+  <Reference Name="BaseHigherMonthlyFeeWholesaleFeesFlex"/>
+</FeeCard>
