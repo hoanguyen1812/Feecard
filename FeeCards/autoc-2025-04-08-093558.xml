@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-16"?>
+<FeeCard Id="autoc-2025-04-08-093558" Name="Auto Commercial Standard 2025-04-08 - v093558">
+  <SettingGroup Name="CustomFee" Handler="SumOfValuesBySettingTypeGroupHandler" AdditionalParameters="{'CustomFeeTypeName':'AdditionalLoadingRate'}">
+    <Setting Type="PercentageOfOutstanding" Value="0" />
+  </SettingGroup>
+  <SettingGroup Name="CustomFee" Handler="SumOfValuesBySettingTypeGroupHandler" AdditionalParameters="{'CustomFeeTypeName':'DynamicSpreadRate'}">
+    <Setting Type="PercentageOfOutstanding" Value="0" />
+  </SettingGroup>
+  <SettingGroup Handler="SumOfValuesBySettingTypeGroupHandler" Name="PlatformServicingRate">
+    <Setting Type="PercentageOfOutstanding" Value="0">
+      <Predicate On="LoanRequest.PlatformType" Name="EqualTo" Value="Retail" />
+    </Setting>
+    <Reference Name="AutoCommercialStandardPSR2025-04-08v093558" />
+  </SettingGroup>
+  <SettingGroup Handler="SumSettingGroupHandler" Name="RSFee">
+    <Setting Value="499" />
+    <Setting Value="100">
+      <Predicate Name="Or">
+        <Predicate On="Wholesale.SaleType" Name="EqualTo" Value="Private" />
+        <Predicate On="Wholesale.FinanceType" Name="EqualTo" Value="Refinance" />
+      </Predicate>
+    </Setting>
+  </SettingGroup>
+  <SettingGroup Handler="FirstMatchSettingGroupHandler" Name="ComparisonRateMaximum">
+    <Setting Value="4800" />
+  </SettingGroup>
+  <SettingGroup Handler="FirstMatchSettingGroupHandler" Name="CreditRateMultiple">
+    <Setting Value="0" />
+  </SettingGroup>
+  <SettingGroup Name="RSPaymentFee" Handler="PaymentFeeGroupHandler">
+    <Setting Value="9.90">
+      <Predicate Name="Or">
+        <Predicate On="LoanRequest.RepaymentFrequency" Name="EqualTo" Value="LegacyMonthly" />
+        <Predicate On="LoanRequest.RepaymentFrequency" Name="EqualTo" Value="Monthly" />
+      </Predicate>
+    </Setting>
+    <Setting Value="4">
+      <Predicate On="LoanRequest.RepaymentFrequency" Name="EqualTo" Value="Fortnightly" />
+    </Setting>
+  </SettingGroup>
+  <SettingGroup Name="RSArrearsFee" Handler="PaymentFeeGroupHandler">
+    <Setting Value="15" />
+  </SettingGroup>
+</FeeCard>
